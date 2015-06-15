@@ -86,5 +86,21 @@ public interface ImageDownloader {
 			}
 			return uri.substring(uriPrefix.length());
 		}
+		/**
+		 * 修改路径。
+		 * 
+		 * @param path
+		 * @return
+		 */
+		public static String fixedUri(String path) {
+			String imageUri = null;
+			Scheme scheme = Scheme.ofUri(path);
+			if(scheme==Scheme.UNKNOWN){//可能本地文件路径缺少“file：//”前缀,导致无法识别
+				imageUri = Scheme.FILE.wrap(path);
+			}else{
+				imageUri = path;
+			}
+			return imageUri;
+		}
 	}
 }

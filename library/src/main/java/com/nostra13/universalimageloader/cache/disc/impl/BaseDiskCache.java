@@ -185,4 +185,16 @@ public abstract class BaseDiskCache implements DiskCache {
 	public void setCompressQuality(int compressQuality) {
 		this.compressQuality = compressQuality;
 	}
+
+	/**
+	 * 获取指定文件缓存大小
+	 */
+	public long getCacheSize() {
+		long cacheSize = 0l;
+		final File[] files = cacheDir.listFiles();
+		for (int i=0; i<files.length; i++) {
+			cacheSize += files[i].length();
+		}
+		return cacheSize;
+	}
 }

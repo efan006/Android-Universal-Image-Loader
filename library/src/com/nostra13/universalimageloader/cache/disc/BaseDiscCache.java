@@ -67,4 +67,17 @@ public abstract class BaseDiscCache implements DiscCacheAware {
 			}
 		}
 	}
+	
+	 /**
+     * 获取指定文件缓存大小
+     * @param cacheDir
+     */
+    public long getCacheSize() {
+    	long cacheSize = 0l;
+    	final File[] files = cacheDir.listFiles();
+        for (int i=0; i<files.length; i++) {
+        	cacheSize += files[i].length();
+        }
+        return cacheSize;
+    }
 }

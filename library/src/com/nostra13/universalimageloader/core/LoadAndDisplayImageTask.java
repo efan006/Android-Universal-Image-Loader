@@ -194,6 +194,7 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
 				if (pause.get()) {
 					log(LOG_WAITING_FOR_RESUME);
 					try {
+						if(!options.isSyncLoading())//消除同步线程假死
 						engine.getPauseLock().wait();
 					} catch (InterruptedException e) {
 						L.e(LOG_TASK_INTERRUPTED, memoryCacheKey);

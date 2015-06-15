@@ -37,7 +37,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author Sergey Tarasevich (nostra13[at]gmail[dot]com)
  * @since 1.7.1
  */
-class ImageLoaderEngine {
+public class ImageLoaderEngine {
 
 	final ImageLoaderConfiguration configuration;
 
@@ -188,11 +188,11 @@ class ImageLoaderEngine {
 		return lock;
 	}
 
-	AtomicBoolean getPause() {
+	public AtomicBoolean getPause() {
 		return paused;
 	}
 
-	Object getPauseLock() {
+	public Object getPauseLock() {
 		return pauseLock;
 	}
 

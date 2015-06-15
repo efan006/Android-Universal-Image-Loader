@@ -99,6 +99,10 @@ public class ImageLoader {
 			L.w(WARNING_RE_INIT_CONFIG);
 		}
 	}
+	
+	public ImageLoaderEngine getEngine() {
+		return engine;
+	}
 
 	/**
 	 * Returns <b>true</b> - if ImageLoader {@linkplain #init(ImageLoaderConfiguration) is initialized with
@@ -225,7 +229,7 @@ public class ImageLoader {
 		}
 
 		ImageSize targetSize = ImageSizeUtils.defineTargetSizeForView(imageAware, configuration.getMaxImageSize());
-		String memoryCacheKey = MemoryCacheUtil.generateKey(uri, targetSize);
+		String memoryCacheKey = MemoryCacheUtil.generateKey(uri, targetSize, options.getShapeMode());
 		engine.prepareDisplayTaskFor(imageAware, memoryCacheKey);
 
 		listener.onLoadingStarted(uri, imageAware.getWrappedView());
@@ -265,7 +269,7 @@ public class ImageLoader {
 			}
 		}
 	}
-
+	
 	/**
 	 * Adds display image task to execution pool. Image will be set to ImageView when it's turn. <br/>
 	 * Default {@linkplain DisplayImageOptions display image options} from {@linkplain ImageLoaderConfiguration

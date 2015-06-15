@@ -84,6 +84,7 @@ public final class DisplayImageOptions {
 	private final BitmapDisplayer displayer;
 	private final Handler handler;
 	private final boolean isSyncLoading;
+	private final int shapeMode;
 
 	private DisplayImageOptions(Builder builder) {
 		imageResOnLoading = builder.imageResOnLoading;
@@ -105,6 +106,7 @@ public final class DisplayImageOptions {
 		displayer = builder.displayer;
 		handler = builder.handler;
 		isSyncLoading = builder.isSyncLoading;
+		shapeMode=builder.shapeMode;
 	}
 
 	public boolean shouldShowImageOnLoading() {
@@ -186,6 +188,10 @@ public final class DisplayImageOptions {
 	public BitmapDisplayer getDisplayer() {
 		return displayer;
 	}
+	
+	public int getShapeMode() {
+		return shapeMode;
+	}
 
 	public Handler getHandler() {
 		if (isSyncLoading) {
@@ -221,7 +227,8 @@ public final class DisplayImageOptions {
 		private boolean resetViewBeforeLoading = false;
 		private boolean cacheInMemory = false;
 		private boolean cacheOnDisc = false;
-		private ImageScaleType imageScaleType = ImageScaleType.IN_SAMPLE_POWER_OF_2;
+//		private ImageScaleType imageScaleType = ImageScaleType.IN_SAMPLE_POWER_OF_2;
+		private ImageScaleType imageScaleType = ImageScaleType.EXACTLY_STRETCHED;
 		private Options decodingOptions = new Options();
 		private int delayBeforeLoading = 0;
 		private boolean considerExifParams = false;
@@ -231,6 +238,7 @@ public final class DisplayImageOptions {
 		private BitmapDisplayer displayer = DefaultConfigurationFactory.createBitmapDisplayer();
 		private Handler handler = null;
 		private boolean isSyncLoading = false;
+		private int shapeMode=0;//图片模式（正常，圆形，心形...）
 
 		public Builder() {
 			decodingOptions.inPurgeable = true;
@@ -460,6 +468,11 @@ public final class DisplayImageOptions {
 			this.handler = handler;
 			return this;
 		}
+		
+		public Builder setShapeMode(int shapeMode){
+			this.shapeMode=shapeMode;
+			return this;
+		}
 
 		/** Sets all options equal to incoming options */
 		public Builder cloneFrom(DisplayImageOptions options) {
@@ -482,6 +495,7 @@ public final class DisplayImageOptions {
 			displayer = options.displayer;
 			handler = options.handler;
 			isSyncLoading = options.isSyncLoading;
+			shapeMode=options.shapeMode;
 			return this;
 		}
 

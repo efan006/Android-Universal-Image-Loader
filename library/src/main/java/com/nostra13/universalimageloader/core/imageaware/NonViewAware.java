@@ -89,4 +89,14 @@ public class NonViewAware implements ImageAware {
 	public boolean setImageBitmap(Bitmap bitmap) { // Do nothing
 		return true;
 	}
+
+    private Object mTag;
+
+    public void setTag(Object uri){
+        mTag = uri;
+    }
+
+    public Object getTag(){
+        return mTag;
+    }
 }

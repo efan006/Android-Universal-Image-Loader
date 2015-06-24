@@ -239,6 +239,14 @@ public class ImageLoader {
 		listener.onLoadingStarted(uri, imageAware.getWrappedView());
 
 		Bitmap bmp = configuration.memoryCache.get(memoryCacheKey);
+        //如果图片数据源一样，则跳过重新显示步骤，直接触发成功的监听
+        //！！但是注意，这样处理没有考虑附加displayer的情况，
+        //也就是说如果数据源一样，但是displayer有变化，一样会跳过，导致新的displayer效果出不来
+        if (!uri.startsWith("drawable") && memoryCacheKey.equals(imageAware.getTag())){
+            listener.onLoadingComplete(uri, imageAware.getWrappedView(), bmp);
+            return;
+        }
+        imageAware.setTag(memoryCacheKey);
 		if (bmp != null && !bmp.isRecycled()) {
 			L.d(LOG_LOAD_IMAGE_FROM_MEMORY_CACHE, memoryCacheKey);
 

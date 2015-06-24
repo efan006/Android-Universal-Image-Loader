@@ -17,6 +17,7 @@ package com.nostra13.universalimageloader.core.imageaware;
 
 import android.graphics.Bitmap;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
@@ -140,4 +141,24 @@ public class ImageViewAware extends ViewAware {
 		}
 		return value;
 	}
+
+    public void setTag(Object uri){
+        ImageView imageView = (ImageView) viewRef.get();
+        if (imageView != null) {
+            imageView.setTag(uri);
+        }
+    }
+
+    public Object getTag(){
+        ImageView imageView = (ImageView) viewRef.get();
+        if (imageView != null) {
+            Drawable drawable = imageView.getDrawable();
+            if (drawable == null ||
+                    drawable instanceof BitmapDrawable && ((BitmapDrawable)drawable).getBitmap() == null){
+                imageView.setTag(null);
+            }
+            return imageView.getTag();
+        } else
+            return null;
+    }
 }

@@ -465,11 +465,36 @@ final class LoadAndDisplayImageTask implements Runnable, IoUtils.CopyListener {
 		if (sync) {
 			r.run();
 		} else if (handler == null) {
-			engine.fireCallback(r);
+            if (!waitIfPaused(engine)){
+                engine.fireCallback(r);
+            }
 		} else {
-			handler.post(r);
+            if (!waitIfPaused(engine)){
+                handler.post(r);
+            }
 		}
 	}
+
+
+    /** @return <b>true</b> - if task should be interrupted; <b>false</b> - otherwise */
+    private static boolean waitIfPaused(ImageLoaderEngine engine) {
+        AtomicBoolean pause = engine.getPause();
+        if (pause.get()) {
+            synchronized (engine.getPauseLock()) {
+                if (pause.get()) {
+                    L.d(LOG_WAITING_FOR_RESUME, "runTask");
+                    try {
+                        engine.getPauseLock().wait();
+                    } catch (InterruptedException e) {
+                        L.e(LOG_TASK_INTERRUPTED, "runTask");
+                        return true;
+                    }
+                    L.d(LOG_RESUME_AFTER_PAUSE, "runTask");
+                }
+            }
+        }
+        return false;
+    }
 
 	/**
 	 * Exceptions for case when task is cancelled (thread is interrupted, image view is reused for another task, view is
